@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import Validate from "./Validate";
 
 const SignUp = () => {
 
@@ -10,6 +11,13 @@ const SignUp = () => {
     confirmPass:''
   });
 
+  useEffect(()=>{
+
+    if(formVals.password !== formVals.confirmPass){
+      console.log('no match')
+    }
+  });
+
   const formHandler = (e) =>{
 
     const nextState = {
@@ -18,6 +26,12 @@ const SignUp = () => {
       
     };
     setformVals(nextState);
+
+  }
+
+  const formSubmit = (e) =>{
+    e.preventDefault();
+    alert(Object.values(formVals));
   }
 
     return(
@@ -29,7 +43,7 @@ const SignUp = () => {
           </div>
           
           <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-          <form>
+          <form onSubmit={formSubmit}>
             <div className="card-body">
               <div className="form-control">
                 <label className="label">
