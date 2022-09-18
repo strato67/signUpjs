@@ -13,11 +13,15 @@ const SignUp = () => {
 
   const [passMismatch, showpassMismatch] = useState(false);
   const [passLength, showpassLength] = useState(false);
+  const [emailVal, showEmailVal] = useState(false);
 
   useEffect(()=>{
 
+    formVals.email.length>0 && (formVals.email.indexOf('@')==-1||formVals.email.indexOf('.')==-1) ? showEmailVal(true) : showEmailVal(false)
     formVals.password !== formVals.confirmPass ? showpassMismatch(true) : showpassMismatch(false);
-    formVals.password.length<8 ? showpassLength(true) : showpassLength(false)
+    formVals.password.length<8&&formVals.password.length>0 ? showpassLength(true) : showpassLength(false)
+
+
   });
 
   const formHandler = (e) =>{
@@ -52,6 +56,7 @@ const SignUp = () => {
                   <span className="label-text">Email</span>
                 </label>
                 <input type="email" placeholder="Email" name="email" className="input input-bordered" value={formVals.email} onChange={formHandler} autoComplete="off" required/>
+                {emailVal && <ErrorPopup message={"Invalid email format"}/>}
               </div>
               <div className="form-control">
                 <label className="label">
