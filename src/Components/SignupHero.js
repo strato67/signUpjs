@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Validate from "./Validate";
+import ErrorPopup from "./ErrorPopup";
 
 const SignUp = () => {
 
@@ -11,11 +11,13 @@ const SignUp = () => {
     confirmPass:''
   });
 
+  const [passMismatch, showpassMismatch] = useState(false);
+  const [passLength, showpassLength] = useState(false);
+
   useEffect(()=>{
 
-    if(formVals.password !== formVals.confirmPass){
-      console.log('no match')
-    }
+    formVals.password !== formVals.confirmPass ? showpassMismatch(true) : showpassMismatch(false);
+    formVals.password.length<8 ? showpassLength(true) : showpassLength(false)
   });
 
   const formHandler = (e) =>{
@@ -49,40 +51,36 @@ const SignUp = () => {
                 <label className="label">
                   <span className="label-text">Email</span>
                 </label>
-                <input type="email" placeholder="Email" name="email" className="input input-bordered" value={formVals.email} onChange={formHandler} autoComplete="on"/>
+                <input type="email" placeholder="Email" name="email" className="input input-bordered" value={formVals.email} onChange={formHandler} autoComplete="off" required/>
               </div>
               <div className="form-control">
                 <label className="label">
                   <span className="label-text">First Name</span>
                 </label>
-                <input type="text" placeholder="First Name" name="firstName" className="input input-bordered" value={formVals.firstName} onChange={formHandler} autoComplete="on"/>
+                <input type="text" placeholder="First Name" name="firstName" className="input input-bordered" value={formVals.firstName} onChange={formHandler} autoComplete="off" required/>
               </div>
               <div className="form-control">
                 <label className="label">
                   <span className="label-text">Last Name</span>
                 </label>
-                <input type="text" placeholder="Last Name" name="lastName" className="input input-bordered" value={formVals.lastName} onChange={formHandler} autoComplete="on"/>
+                <input type="text" placeholder="Last Name" name="lastName" className="input input-bordered" value={formVals.lastName} onChange={formHandler} autoComplete="off" required/>
               </div>
               <div className="form-control">
                 <label className="label">
                   <span className="label-text">Password</span>
                 </label>
-                <input type="password" placeholder="Password" name="password" className="input input-bordered" value={formVals.password} onChange={formHandler} autoComplete="off"/>
-                <label className="label">
-                  <span className="label-text-alt text-error hidden">Password should be at least 8 characters</span>
-                
-                </label>
+                <input type="password" placeholder="Password" name="password" className="input input-bordered" value={formVals.password} onChange={formHandler} autoComplete="off" required/>
+                {passLength && <ErrorPopup message={"Password should be at least 8 characters"}/>}
+
               </div>
 
               <div className="form-control">
                 <label className="label">
                   <span className="label-text">Reenter Password</span>
                 </label>
-                <input type="password" placeholder="Reenter Password" name="confirmPass" className="input input-bordered" value={formVals.confirmPass} onChange={formHandler} autoComplete="off"/>
-                <label className="label">
-                  <span className="label-text-alt text-error hidden">Passwords don't match</span>
-                
-                </label>
+                <input type="password" placeholder="Reenter Password" name="confirmPass" className="input input-bordered" value={formVals.confirmPass} onChange={formHandler} autoComplete="off" required/>
+                {passMismatch && <ErrorPopup message={"Passwords don't match"}/>}
+
               </div>
               
               <div className="form-control mt-6">
